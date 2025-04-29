@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_favourites">
+
+    <fragment
+        android:id="@+id/navigation_favourites"
+        android:name="com.recipebook.android.ui.favourites.FavouritesFragment"
+        tools:layout="@layout/fragment_favourites" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.recipebook.android.ui.favourites.FavouritesFragment"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.recipebook.android.ui.settings.SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
