@@ -19,7 +19,7 @@ import java.util.List;
 public interface RecipesDao {
     // Теги
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTag(Tag tag);
+    long insertTag(Tag tag);
     @Query("SELECT * FROM Tags")
     LiveData<List<Tag>> getAllTags();
     @Query("SELECT * FROM Tags WHERE name = :tagName")
@@ -29,7 +29,7 @@ public interface RecipesDao {
 
     // Ингредиенты
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTag(Ingredient ingredient);
+    long insertIngredient(Ingredient ingredient);
     @Query("SELECT * FROM Ingredients")
     LiveData<List<Ingredient>> getAllIngredients();
     @Query("SELECT * FROM Ingredients WHERE name = :ingredientName")
@@ -39,7 +39,7 @@ public interface RecipesDao {
 
     // Измерения
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeasurement(Measurement measurement);
+    long insertMeasurement(Measurement measurement);
     @Query("SELECT * FROM Measurements")
     LiveData<List<Measurement>> getAllMeasurements();
     @Query("SELECT * FROM Measurements WHERE name = :measurementName")
@@ -49,7 +49,7 @@ public interface RecipesDao {
 
     // Блюда
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeal(Meal meal);
+    long insertMeal(Meal meal);
     @Query("SELECT * FROM Meals")
     LiveData<List<Meal>> getAllMeals();
     @Query("SELECT * FROM Meals WHERE is_favorite = :favorite")
@@ -59,7 +59,7 @@ public interface RecipesDao {
 
     // Рецепты
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertRecipe(Recipe recipe);
+    long insertRecipe(Recipe recipe);
     @Query("SELECT * FROM Recipes WHERE meal_id = :mealId")
     LiveData<List<Recipe>> getRecipeForMeal(int mealId);
     @Query("DELETE FROM Recipes WHERE meal_id = :mealId")
@@ -92,7 +92,7 @@ public interface RecipesDao {
 
     // Блюда по тегам
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMealTag(MealTag mealTag);
+    long insertMealTag(MealTag mealTag);
     @Query("SELECT * FROM MealTags WHERE meal_id = :mealId")
     List<MealTag> getMealTags(int mealId);
     @Query("DELETE FROM MealTags WHERE meal_id = :mealId AND tag_id = :tagId")
