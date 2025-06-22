@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.recipebook.android.R;
 
 import java.util.List;
+
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder>{
     private final LayoutInflater inflater;
@@ -21,14 +23,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder>{
         this.meals = meals;
         this.inflater = LayoutInflater.from(context);
     }
+    @NonNull
     @Override
-    public MealAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MealAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_meal, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MealAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MealAdapter.ViewHolder holder, int position) {
         Meal state = meals.get(position);
         holder.imageView.setImageResource(state.getImage());
         holder.nameView.setText(state.getName());
@@ -41,9 +44,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder>{
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final ImageView imageView;
-        final TextView nameView, descriptionView;
-        ViewHolder(View view){
+        private final ImageView imageView;
+        private final TextView nameView, descriptionView;
+        public ViewHolder(@NonNull View view){
             super(view);
             imageView = view.findViewById(R.id.imageView);
             nameView = view.findViewById(R.id.nameTextView);

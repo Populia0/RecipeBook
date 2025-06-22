@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RecipeBook</string>
+    <string name="search_recipe">Найти рецепт</string>
+    <string name="add_recipe_button">Добавить рецепт</string>
+    <string name="recipe_name_hint">Название блюда</string>
+    <string name="recipe_description_hint">Короткое описание блюда (или сокращение с ...)</string>
 </resources>

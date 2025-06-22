@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColorHint">#A2A2A2</item>
+        <item name="android:background">@drawable/searchview_background</item>
+    </style>
+    <style name="AppButtonViewStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColorHint">#CCCCCC</item>
+        <item name="android:background">@drawable/button_background</item>
+    </style>
+    <style name="AppContainerViewStyle">
+        <item name="android:background">@drawable/gradient_background</item>
+    </style>
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+</resources>
