@@ -1,4 +1,4 @@
-package com.recipebook.android.ui.search;
+package com.recipebook.android.ui.favourites;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,35 +14,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.recipebook.android.R;
 import com.recipebook.android.db.entities.Meal;
+import com.recipebook.android.ui.search.MealAdapter;
+import com.recipebook.android.ui.search.SearchViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder>{
+public class FavouriteMealAdapter extends RecyclerView.Adapter<FavouriteMealAdapter.FavouriteMealViewHolder> {
     private final Context context;
     private List<Meal> meals;
-    private final SearchViewModel viewModel;
+    private final FavouritesViewModel viewModel;
 
-    public MealAdapter(Context context, SearchViewModel viewModel) {
+    public FavouriteMealAdapter(Context context, FavouritesViewModel viewModel) {
         this.context = context;
-        this.meals = new ArrayList<Meal>();
+        this.meals = new ArrayList<>();
         this.viewModel = viewModel;
     }
 
     @NonNull
     @Override
-    public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavouriteMealAdapter.FavouriteMealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_meal, parent, false);
-        return new MealViewHolder(view);
+        return new FavouriteMealAdapter.FavouriteMealViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavouriteMealAdapter.FavouriteMealViewHolder holder, int position) {
         Meal meal = meals.get(position);
         holder.name.setText(meal.getName());
         holder.description.setText(meal.getDescription());
-        holder.image.setImageURI(Uri.parse(meal.getImgUri()));
 
         String imgUri = meal.getImgUri();
         if (imgUri != null && !imgUri.isEmpty()) {
@@ -74,13 +74,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         return meals.size();
     }
 
-    static class MealViewHolder extends RecyclerView.ViewHolder {
+    static class FavouriteMealViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView description;
         ImageView image;
         CheckBox isFavoriteCheckBox;
 
-        public MealViewHolder(@NonNull View itemView) {
+        public FavouriteMealViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.nameTextView);
             description = itemView.findViewById(R.id.descriptionTextView);

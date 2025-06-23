@@ -7,26 +7,43 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.recipebook.android.R;
+import com.recipebook.android.databinding.FragmentFavouritesBinding;
 import com.recipebook.android.databinding.FragmentSearchBinding;
+import com.recipebook.android.ui.favourites.FavouriteMealAdapter;
 
 public class FavouritesFragment extends Fragment {
 
-    private FragmentSearchBinding binding;
+    private FragmentFavouritesBinding binding;
+    private FavouritesViewModel viewModel;
+    private FavouriteMealAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        FavouritesViewModel searchViewModel =
-                new ViewModelProvider(this).get(FavouritesViewModel.class);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentFavouritesBinding.inflate(inflater, container, false);
+        viewModel = new ViewModelProvider(this).get(FavouritesViewModel.class);
 
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        adapter = new FavouriteMealAdapter(getContext(), viewModel);
 
-        //final TextView textView = binding.textSearch;
-        //searchViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        binding.favouritesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.favouritesRecyclerView.setAdapter(adapter);
+
+        viewModel.getFavouriteMeals().observe(getViewLifecycleOwner(), meals -> {
+            adapter.setMeals(meals);
+        });
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        requireActivity().setTitle(getString(R.string.favourites_fragment_title));
     }
 
     @Override

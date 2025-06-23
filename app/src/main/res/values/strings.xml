@@ -4,4 +4,5 @@
     <string name="add_recipe_button">Добавить рецепт</string>
     <string name="recipe_name_hint">Название блюда</string>
     <string name="recipe_description_hint">Короткое описание блюда (или сокращение с ...)</string>
+    <string name="favourites_fragment_title">Любимые блюда</string>
 </resources>

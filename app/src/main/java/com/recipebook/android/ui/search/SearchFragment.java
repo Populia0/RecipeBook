@@ -1,5 +1,6 @@
 package com.recipebook.android.ui.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.recipebook.android.R;
 import com.recipebook.android.databinding.FragmentSearchBinding;
+import com.recipebook.android.db.DatabaseHelper;
+import com.recipebook.android.db.entities.Meal;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,7 +29,7 @@ import java.util.Objects;
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
-    private final ArrayList<Meal> meals = new ArrayList<>();
+    private MealAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,16 +45,16 @@ public class SearchFragment extends Fragment {
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // начальная инициализация списка
-        setInitialData();
         RecyclerView recyclerView = binding.recyclerView;
-        // создаем адаптер
-        MealAdapter adapter = new MealAdapter(getContext(), meals);
-        Log.d("DEBUG", "binding.recyclerView = " + binding.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // устанавливаем для списка адаптер
+
+        adapter = new MealAdapter(getContext(), searchViewModel);
         recyclerView.setAdapter(adapter);
+
+        searchViewModel.getAllMeals().observe(getViewLifecycleOwner(), meals -> {
+            adapter.setMeals(meals);
+        });
 
         return root;
     }
@@ -62,14 +65,6 @@ public class SearchFragment extends Fragment {
         MenuItem search = menu.findItem(R.id.searchView);
         SearchView sv =(SearchView) MenuItemCompat.getActionView(search);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    private void setInitialData(){
-        meals.add(new Meal ("Блюдо 1", "Готовится быстро Готовится быстро Готовится быстро Готовится быстро", R.drawable.test));
-        meals.add(new Meal ("Блюдо 2", "Завтрак", R.drawable.test));
-        meals.add(new Meal ("Название название название", "Описание описание описание", R.drawable.test));
-        meals.add(new Meal ("Блюдо 4", "Описание", R.drawable.test));
-        meals.add(new Meal ("Блюдо 5", "рарфрфовроырвлорфыволрфыолрволфырвлофрыволрфыолвролфырволфрывлорфыолвролфырв", R.drawable.test));
     }
 
     @Override
