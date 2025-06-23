@@ -17,7 +17,7 @@ public class Meal {
     private String description;
 
     @ColumnInfo(name = "is_favorite")
-    private boolean isFavorite;
+    private int isFavorite;
 
     @ColumnInfo(name = "img_uri")
     private String imgUri;
@@ -28,8 +28,8 @@ public class Meal {
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public boolean isFavorite() { return isFavorite; }
-    public void setFavorite(boolean favorite) { isFavorite = favorite; }
+    public int isFavorite() { return isFavorite; }
+    public void setIsFavorite(int favorite) { isFavorite = favorite; }
     public String getImgUri() { return imgUri; }
     public void setImgUri(String imgUri) { this.imgUri = imgUri; }
 }

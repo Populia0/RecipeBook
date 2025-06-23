@@ -11,6 +11,7 @@ import com.recipebook.android.db.entities.Measurement;
 import com.recipebook.android.db.entities.Recipe;
 import com.recipebook.android.db.entities.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -41,6 +42,96 @@ public class DBRepository {
         return recipesDao.getAllMeals();
     }
 
+    public LiveData<List<Recipe>> getMealRecipe(Meal meal) {
+        return recipesDao.getRecipeForMeal(meal.getId());
+    }
+
+    public LiveData<List<MealTag>> getMealTags(Meal meal) {
+        return recipesDao.getMealTags(meal.getId());
+    }
+
+    public void setFavoriteMeal(Meal meal) {
+        meal.setIsFavorite(meal.isFavorite() == 0 ? 1 : 0);
+        recipesDao.setFavoriteMeal(meal);
+    }
+
+    public void setMealImage(Meal meal, String uri) {
+        meal.setImgUri(uri);
+        recipesDao.setMealImage(meal);
+    }
+
+    public LiveData<List<Meal>> getFavoriteMeals() {
+        return recipesDao.getFavoriteMeals();
+    }
+
+    public void UpdateMeal(Meal meal, List<Recipe> recipes, List<MealTag> mealTags) {
+        recipesDao.updateMealInfo(meal);
+        for (Recipe recipe: recipes) {
+            recipesDao.updateRecipeInfo(recipe);
+        }
+        for (MealTag mealTag: mealTags) {
+            recipesDao.updateMealTag(mealTag);
+        }
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        recipesDao.deleteRecipe(recipe.getId());
+    }
+
+    public void deleteMeal(Meal meal) {
+        recipesDao.deleteMeal(meal.getId());
+    }
+
+    public void deleteIngredient(Ingredient ingredient) {
+        recipesDao.deleteIngredient(ingredient.getId());
+    }
+
+    public void deleteIngredientFromMeal(Ingredient ingredient, Meal meal) {
+        recipesDao.deleteIngredientFromMeal(meal.getId(), ingredient.getId());
+    }
+
+    public void deleteTag(Tag tag) {
+        recipesDao.deleteTag(tag.getId());
+    }
+
+    public void deleteTagFromMeal(Tag tag, Meal meal) {
+        recipesDao.deleteTagFromMeal(meal.getId(), tag.getId());
+    }
+
+    public void deleteMeasurement(Measurement measurement) {
+        recipesDao.deleteMeasurement(measurement.getId());
+    }
+
+    public LiveData<List<Meal>> getMealsByTags(List<Tag> tags) {
+        List<Integer> tagIds = new ArrayList<>();
+        for (Tag tag : tags) {
+            tagIds.add(tag.getId());
+        }
+        return recipesDao.getMealsByTags(tagIds, tagIds.size());
+    }
+
+    public LiveData<List<Meal>> getMealsByIngredients(List<Ingredient> ingredients) {
+        List<Integer> ingredientIds = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            ingredientIds.add(ingredient.getId());
+        }
+        return recipesDao.getMealsByIngredients(ingredientIds, ingredientIds.size());
+    }
+
+    public LiveData<List<Meal>> getMealsByIngredientsAndTags(List<Tag> tags, List<Ingredient> ingredients) {
+        List<Integer> tagIds = new ArrayList<>();
+        for (Tag tag : tags) {
+            tagIds.add(tag.getId());
+        }
+
+        List<Integer> ingredientIds = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            ingredientIds.add(ingredient.getId());
+        }
+
+        return recipesDao.getMealsByIngredientsAndTags(ingredientIds, tagIds, ingredientIds.size(), tagIds.size());
+    }
+
     public void insertMeal(Meal meal, List<Ingredient> ingredients, List<Double> amounts, List<Measurement> measurements, List<Tag> tags) {
         executor.execute(() -> {
             long mealId = recipesDao.insertMeal(meal);
@@ -52,9 +143,7 @@ public class DBRepository {
                 Ingredient ingredient = ingredients.get(i);
                 Ingredient existing_i = recipesDao.getIngredientByName(ingredient.getName());
                 if (existing_i == null) {
-                    Ingredient newIngredient = new Ingredient();
-                    newIngredient.setName(ingredient.getName());
-                    long ingredientId = recipesDao.insertIngredient(newIngredient);
+                    long ingredientId = recipesDao.insertIngredient(ingredient);
                     recipe.setIngredientId((int) ingredientId);
                 } else {
                     recipe.setIngredientId(existing_i.getId());
@@ -65,9 +154,7 @@ public class DBRepository {
                 Measurement measurement = measurements.get(i);
                 Measurement existing_m = recipesDao.getMeasurementByName(measurement.getName());
                 if (existing_m == null) {
-                    Measurement newMeasurement = new Measurement();
-                    newMeasurement.setName(measurement.getName());
-                    long measurementId = recipesDao.insertMeasurement(newMeasurement);
+                    long measurementId = recipesDao.insertMeasurement(measurement);
                     recipe.setMeasurementId((int) measurementId);
                 } else {
                     recipe.setMeasurementId(existing_m.getId());
@@ -79,7 +166,16 @@ public class DBRepository {
             for (Tag tag: tags) {
                 MealTag mealTag = new MealTag();
                 mealTag.setMealId((int) mealId);
-                mealTag.setTagId(tag.getId());
+
+                Tag existing = recipesDao.getTagByName(tag.getName());
+                if (existing == null) {
+                    long tagId = recipesDao.insertTag(tag);
+                    mealTag.setTagId((int) tagId);
+                } else {
+                    mealTag.setTagId(existing.getId());
+                }
+
+                recipesDao.insertMealTag(mealTag);
             }
         });
     }

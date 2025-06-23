@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.recipebook.android.db.entities.Ingredient;
 import com.recipebook.android.db.entities.Meal;
@@ -52,16 +53,24 @@ public interface RecipesDao {
     long insertMeal(Meal meal);
     @Query("SELECT * FROM Meals")
     LiveData<List<Meal>> getAllMeals();
-    @Query("SELECT * FROM Meals WHERE is_favorite = :favorite")
-    LiveData<List<Meal>> getFavoriteMeals(int favorite);
+    @Query("SELECT * FROM Meals WHERE is_favorite = 1")
+    LiveData<List<Meal>> getFavoriteMeals();
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void setFavoriteMeal(Meal meal);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void setMealImage(Meal meal);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateMealInfo(Meal meal);
     @Query("DELETE FROM Meals WHERE id = :mealId")
     void deleteMeal(int mealId);
 
     // Рецепты
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertRecipe(Recipe recipe);
+    void insertRecipe(Recipe recipe);
     @Query("SELECT * FROM Recipes WHERE meal_id = :mealId")
     LiveData<List<Recipe>> getRecipeForMeal(int mealId);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateRecipeInfo(Recipe recipe);
     @Query("DELETE FROM Recipes WHERE meal_id = :mealId")
     void deleteRecipe(int mealId);
     @Query("DELETE FROM Recipes WHERE meal_id = :mealId AND ingredient_id = :ingredientId")
@@ -92,9 +101,11 @@ public interface RecipesDao {
 
     // Блюда по тегам
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertMealTag(MealTag mealTag);
+    void insertMealTag(MealTag mealTag);
     @Query("SELECT * FROM MealTags WHERE meal_id = :mealId")
-    List<MealTag> getMealTags(int mealId);
+    LiveData<List<MealTag>> getMealTags(int mealId);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateMealTag(MealTag mealTag);
     @Query("DELETE FROM MealTags WHERE meal_id = :mealId AND tag_id = :tagId")
     void deleteTagFromMeal(int mealId, int tagId);
 }
