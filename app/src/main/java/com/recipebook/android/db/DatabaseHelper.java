@@ -27,7 +27,7 @@ import com.recipebook.android.db.entities.Tag;
         exportSchema = false
 )
 public abstract class DatabaseHelper extends RoomDatabase {
-    public static final String DB_NAME = "RecipesDB";
+    public static final String DB_NAME = "RecipesDB.db";
     public abstract RecipesDao recipesDao();
     public static volatile DatabaseHelper INSTANCE;
 

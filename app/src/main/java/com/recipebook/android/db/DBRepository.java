@@ -24,6 +24,44 @@ public class DBRepository {
         DatabaseHelper db = DatabaseHelper.getInstance(application);
         recipesDao = db.recipesDao();
         executor = Executors.newSingleThreadExecutor();
+        executor.execute(this::setInitialData);
+    }
+
+    private void setInitialData(){
+        Meal meal1 = new Meal();
+        meal1.setName("Блюдо 1");
+        meal1.setDescription("Готовится быстро Готовится быстро Готовится быстро Готовится быстро");
+        meal1.setIsFavorite(0);
+        meal1.setImgUri("");
+        recipesDao.insertMeal(meal1);
+
+        Meal meal2 = new Meal();
+        meal2.setName("Блюдо 2");
+        meal2.setDescription("Завтрак");
+        meal2.setIsFavorite(0);
+        meal2.setImgUri("");
+        recipesDao.insertMeal(meal2);
+
+        Meal meal3 = new Meal();
+        meal3.setName("Название название название");
+        meal3.setDescription("Описание описание описание");
+        meal3.setIsFavorite(0);
+        meal3.setImgUri("");
+        recipesDao.insertMeal(meal3);
+
+        Meal meal4 = new Meal();
+        meal4.setName("Блюдо 4");
+        meal4.setDescription("Описание");
+        meal4.setIsFavorite(0);
+        meal4.setImgUri("");
+        recipesDao.insertMeal(meal4);
+
+        Meal meal5 = new Meal();
+        meal5.setName("Блюдо 5");
+        meal5.setDescription("рарфрфовроырвлорфыволрфыолрволфырвлофрыволрфыолвролфырволфрывлорфыолвролфырв");
+        meal5.setIsFavorite(0);
+        meal5.setImgUri("");
+        recipesDao.insertMeal(meal5);
     }
 
     public LiveData<List<Tag>> getAllTags() {
@@ -130,6 +168,10 @@ public class DBRepository {
         }
 
         return recipesDao.getMealsByIngredientsAndTags(ingredientIds, tagIds, ingredientIds.size(), tagIds.size());
+    }
+
+    public void insertMeal(Meal meal) {
+        recipesDao.insertMeal(meal);
     }
 
     public void insertMeal(Meal meal, List<Ingredient> ingredients, List<Double> amounts, List<Measurement> measurements, List<Tag> tags) {
