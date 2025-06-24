@@ -53,6 +53,8 @@ public interface RecipesDao {
     long insertMeal(Meal meal);
     @Query("SELECT * FROM Meals")
     LiveData<List<Meal>> getAllMeals();
+    @Query("SELECT COUNT(*) FROM Meals")
+    int getMealsCount();
     @Query("SELECT * FROM Meals WHERE is_favorite = 1")
     LiveData<List<Meal>> getFavoriteMeals();
     @Update(onConflict = OnConflictStrategy.REPLACE)
