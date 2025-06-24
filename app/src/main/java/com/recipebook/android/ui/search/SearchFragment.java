@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 
@@ -47,6 +49,8 @@ public class SearchFragment extends Fragment {
 
         SearchView searchView = binding.searchView;
 
+        setupToolbar();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -80,6 +84,17 @@ public class SearchFragment extends Fragment {
         return root;
     }
 
+    private void setupToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.search_recipe);
+        }
+
+        setHasOptionsMenu(true);
+    }
+    
     //@Override
     //public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     //    inflater.inflate(R.menu.search_menu, menu);

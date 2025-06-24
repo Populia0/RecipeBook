@@ -314,7 +314,7 @@ public class AddRecipeFragment extends Fragment {
 
         if (!query.isEmpty() && !tagExists) {
             Chip addChip = new Chip(getContext());
-            addChip.setText(R.string.add_text + "\"" + query + "\"");
+            addChip.setText("Добавить \"" + query + "\"");
             addChip.setChipIconResource(R.drawable.ic_add);
             addChip.setChipIconVisible(true);
             addChip.setClickable(true);

@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +33,8 @@ public class FavouritesFragment extends Fragment {
 
         adapter = new FavouriteMealAdapter(getContext(), viewModel);
 
+        setupToolbar();
+
         binding.favouritesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.favouritesRecyclerView.setAdapter(adapter);
 
@@ -39,6 +43,17 @@ public class FavouritesFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    private void setupToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.favourites_fragment_title);
+        }
+
+        setHasOptionsMenu(true);
     }
 
     @Override
