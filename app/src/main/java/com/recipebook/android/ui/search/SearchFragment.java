@@ -1,30 +1,19 @@
 package com.recipebook.android.ui.search;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.appcompat.widget.SearchView;
 
+
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.recipebook.android.R;
 import com.recipebook.android.databinding.FragmentSearchBinding;
-import com.recipebook.android.db.DatabaseHelper;
-import com.recipebook.android.db.entities.Meal;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class SearchFragment extends Fragment {
 
@@ -52,20 +41,45 @@ public class SearchFragment extends Fragment {
         adapter = new MealAdapter(getContext(), searchViewModel);
         recyclerView.setAdapter(adapter);
 
-        searchViewModel.getAllMeals().observe(getViewLifecycleOwner(), meals -> {
+        //searchViewModel.getAllMeals().observe(getViewLifecycleOwner(), meals -> {
+        //    adapter.setMeals(meals);
+        //});
+
+        SearchView searchView = binding.searchView;
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewModel.filterMeals(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchViewModel.filterMeals(newText);
+                return true;
+            }
+        });
+
+        searchViewModel.getFilteredMeals().observe(getViewLifecycleOwner(), meals -> {
             adapter.setMeals(meals);
+        });
+
+        searchViewModel.getAllMeals().observe(getViewLifecycleOwner(), meals -> {
+            if (meals != null) {
+                searchViewModel.init();
+            }
         });
 
         return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_menu, menu);
-        MenuItem search = menu.findItem(R.id.searchView);
-        SearchView sv =(SearchView) MenuItemCompat.getActionView(search);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    //@Override
+    //public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    //    inflater.inflate(R.menu.search_menu, menu);
+    //    MenuItem search = menu.findItem(R.id.searchView);
+    //    SearchView sv =(SearchView) MenuItemCompat.getActionView(search);
+    //    super.onCreateOptionsMenu(menu, inflater);
 
     @Override
     public void onDestroyView() {
