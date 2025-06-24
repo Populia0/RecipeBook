@@ -69,4 +69,5 @@ public class SearchViewModel extends AndroidViewModel {
             repository.setFavoriteMeal(meal);
         });
     }
+
 }

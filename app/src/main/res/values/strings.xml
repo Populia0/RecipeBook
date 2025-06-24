@@ -2,7 +2,13 @@
     <string name="app_name">RecipeBook</string>
     <string name="search_recipe">Найти рецепт</string>
     <string name="add_recipe_button">Добавить рецепт</string>
+    <string name="add_text">Добавить</string>
     <string name="recipe_name_hint">Название блюда</string>
-    <string name="recipe_description_hint">Короткое описание блюда (или сокращение с ...)</string>
+    <string name="recipe_description_hint">Описание блюда</string>
     <string name="favourites_fragment_title">Любимые блюда</string>
+    <string name="action_save">Сохранить</string>
+    <string name="ingredients_text">Добавить ингредиенты</string>
+    <string name="tags_text">Добавить тэги</string>
+    <string name="search_ingredients_hint">Найти или добавить ингредиент</string>
+    <string name="search_tags_hint">Найти или добавить тэг</string>
 </resources>

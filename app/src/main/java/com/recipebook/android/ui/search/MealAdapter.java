@@ -42,7 +42,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         Meal meal = meals.get(position);
         holder.name.setText(meal.getName());
         holder.description.setText(meal.getDescription());
-        holder.image.setImageURI(Uri.parse(meal.getImgUri()));
 
         String imgUri = meal.getImgUri();
         if (imgUri != null && !imgUri.isEmpty()) {

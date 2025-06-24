@@ -24,7 +24,6 @@ public class DBRepository {
         DatabaseHelper db = DatabaseHelper.getInstance(application);
         recipesDao = db.recipesDao();
         executor = Executors.newSingleThreadExecutor();
-        executor.execute(this::setInitialData);
     }
 
     private void setInitialData(){
@@ -33,35 +32,35 @@ public class DBRepository {
         meal1.setDescription("Готовится быстро Готовится быстро Готовится быстро Готовится быстро");
         meal1.setIsFavorite(1);
         meal1.setImgUri("android.resource://com.recipebook.android/drawable/test");
-        recipesDao.insertMeal(meal1);
+        recipesDao.insertOneMeal(meal1);
 
         Meal meal2 = new Meal();
         meal2.setName("Блюдо 2");
         meal2.setDescription("Завтрак");
         meal2.setIsFavorite(0);
         meal2.setImgUri("android.resource://com.recipebook.android/drawable/test");
-        recipesDao.insertMeal(meal2);
+        recipesDao.insertOneMeal(meal2);
 
         Meal meal3 = new Meal();
         meal3.setName("Название название название");
         meal3.setDescription("Описание описание описание");
         meal3.setIsFavorite(0);
         meal3.setImgUri("android.resource://com.recipebook.android/drawable/test");
-        recipesDao.insertMeal(meal3);
+        recipesDao.insertOneMeal(meal3);
 
         Meal meal4 = new Meal();
         meal4.setName("Блюдо 4");
         meal4.setDescription("Описание");
         meal4.setIsFavorite(0);
         meal4.setImgUri("android.resource://com.recipebook.android/drawable/test");
-        recipesDao.insertMeal(meal4);
+        recipesDao.insertOneMeal(meal4);
 
         Meal meal5 = new Meal();
         meal5.setName("Блюдо 5");
         meal5.setDescription("рарфрфовроырвлорфыволрфыолрволфырвлофрыволрфыолвролфырволфрывлорфыолвролфырв");
         meal5.setIsFavorite(1);
         meal5.setImgUri("android.resource://com.recipebook.android/drawable/test");
-        recipesDao.insertMeal(meal5);
+        recipesDao.insertOneMeal(meal5);
     }
 
     public LiveData<List<Tag>> getAllTags() {
@@ -170,13 +169,13 @@ public class DBRepository {
         return recipesDao.getMealsByIngredientsAndTags(ingredientIds, tagIds, ingredientIds.size(), tagIds.size());
     }
 
-    public void insertMeal(Meal meal) {
-        recipesDao.insertMeal(meal);
+    public void insertOneMeal(Meal meal) {
+        recipesDao.insertOneMeal(meal);
     }
 
     public void insertMeal(Meal meal, List<Ingredient> ingredients, List<Double> amounts, List<Measurement> measurements, List<Tag> tags) {
         executor.execute(() -> {
-            long mealId = recipesDao.insertMeal(meal);
+            long mealId = recipesDao.insertOneMeal(meal);
 
             for (int i = 0; i < ingredients.size(); i++) {
                 Recipe recipe = new Recipe();
@@ -221,4 +220,27 @@ public class DBRepository {
             }
         });
     }
+
+    public void insertIngredient(Ingredient ingredient) {
+        executor.execute(() -> {
+            Ingredient existing = recipesDao.getIngredientByName(ingredient.getName());
+            if (existing == null) {
+                recipesDao.insertIngredient(ingredient);
+            }
+        });
+    }
+
+    public void insertTag(Tag tag) {
+        executor.execute(() -> {
+            Ingredient existing = recipesDao.getIngredientByName(tag.getName());
+            if (existing == null) {
+                recipesDao.insertTag(tag);
+            }
+        });
+    }
+
+    public void deleteAllMeals() {
+        executor.execute(() -> recipesDao.deleteAllMeals());
+    }
+
 }

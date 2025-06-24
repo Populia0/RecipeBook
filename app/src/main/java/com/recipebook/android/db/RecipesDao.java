@@ -50,7 +50,7 @@ public interface RecipesDao {
 
     // Блюда
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertMeal(Meal meal);
+    long insertOneMeal(Meal meal);
     @Query("SELECT * FROM Meals")
     LiveData<List<Meal>> getAllMeals();
     @Query("SELECT * FROM Meals WHERE is_favorite = 1")
@@ -63,6 +63,8 @@ public interface RecipesDao {
     void updateMealInfo(Meal meal);
     @Query("DELETE FROM Meals WHERE id = :mealId")
     void deleteMeal(int mealId);
+    @Query("DELETE FROM Meals")
+    void deleteAllMeals();
 
     // Рецепты
     @Insert(onConflict = OnConflictStrategy.REPLACE)

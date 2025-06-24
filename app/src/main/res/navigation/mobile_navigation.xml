@@ -8,7 +8,12 @@
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.recipebook.android.ui.search.SearchFragment"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/action_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favourites"
@@ -19,4 +24,10 @@
         android:id="@+id/navigation_settings"
         android:name="com.recipebook.android.ui.settings.SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/addRecipeFragment"
+        android:name="com.recipebook.android.ui.adding.AddRecipeFragment"
+        android:label="Добавить рецепт"
+        tools:layout="@layout/fragment_add_recipe" />
 </navigation>
